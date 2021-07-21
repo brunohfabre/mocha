@@ -35,6 +35,9 @@
         }
       }
     ],
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "argsIgnorePattern": "_"
+    }],
     "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
     "no-shadow": "off",
@@ -53,7 +56,7 @@
       "warn",
       {
         "newlinesBetween": "always",
-        "groups": ["module", "/^@shared/", ["parent", "sibling", "index"]],
+        "groups": ["module", "/^@config/", "/^@shared/", "/^@modules/", ["parent", "sibling", "index"]],
         "alphabetize": { "order": "asc", "ignoreCase": true }
       }
     ],
