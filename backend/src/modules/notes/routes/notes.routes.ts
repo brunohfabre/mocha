@@ -1,9 +1,12 @@
 import { Router } from 'express';
 
-const notesRouter = Router();
+import { NotesController } from '../controllers/NotesController';
 
-notesRouter.get('/', (request, response) => {
-  return response.json({ notes: true });
-});
+const notesRouter = Router();
+const notesController = new NotesController();
+
+notesRouter.get('/', notesController.index);
+
+notesRouter.post('/', notesController.create);
 
 export { notesRouter };
