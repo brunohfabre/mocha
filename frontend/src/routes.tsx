@@ -7,8 +7,9 @@ import { UnderConstruction } from './pages/UnderConstruction';
 export function Routes(): JSX.Element {
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
       <Route path="/signin" exact component={SignIn} />
+
+      <Route path="/dashboard" exact component={Home} />
 
       <Route path="*" component={UnderConstruction} />
     </Switch>
