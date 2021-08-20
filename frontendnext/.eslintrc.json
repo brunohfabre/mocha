@@ -21,8 +21,7 @@
     "react",
     "@typescript-eslint",
     "react-hooks",
-    "prettier",
-    "eslint-plugin-import-helpers"
+    "prettier"
   ],
   "rules": {
     "prettier/prettier": "error",
@@ -32,14 +31,6 @@
     "camelcase": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "import-helpers/order-imports": [
-      "warn",
-      {
-        "newlinesBetween": "always",
-        "groups": ["/^react$/", "module", "/^@services/", "/^@helpers/", "/^@utils/", "/^@hooks/", "/^@components/", ["parent", "sibling", "index"]],
-        "alphabetize": { "order": "asc", "ignoreCase": true }
-      }
-    ],
     "react/jsx-filename-extension": [
       1,
       {
@@ -60,17 +51,7 @@
     "@typescript-eslint/no-use-before-define": [
       "error"
     ],
-    "react/react-in-jsx-scope": "off",
-    "jsx-a11y/label-has-associated-control": [ "error", {
-      "required": {
-        "some": [ "nesting", "id"  ]
-      }
-    }],
-    "jsx-a11y/label-has-for": [ "error", {
-      "required": {
-        "some": [ "nesting", "id"  ]
-      }
-    }]
+    "react/react-in-jsx-scope": "off"
   },
   "settings": {
     "import/resolver": {
