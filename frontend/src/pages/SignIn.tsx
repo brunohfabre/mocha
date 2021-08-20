@@ -9,7 +9,7 @@ export function SignIn(): JSX.Element {
   const history = useHistory();
 
   useEffect(() => {
-    document.title = 'Sign In | Mocha';
+    document.title = 'Sign in | Mocha';
   }, []);
 
   return (
