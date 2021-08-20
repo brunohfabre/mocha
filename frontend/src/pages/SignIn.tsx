@@ -54,7 +54,7 @@ export function SignIn(): JSX.Element {
               id="email"
               type="text"
               placeholder="Email"
-              className="h-10 bg-gray-100 rounded-lg px-4 focus:outline-none focus:ring focus:ring-purple-300"
+              className="h-10 bg-gray-100 rounded-lg px-4 border focus:outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300"
             />
           </div>
 
@@ -66,7 +66,7 @@ export function SignIn(): JSX.Element {
               type="password"
               id="password"
               placeholder="Password"
-              className="h-10 bg-gray-100 rounded-lg px-4 focus:outline-none focus:ring focus:ring-purple-300"
+              className="h-10 bg-gray-100 rounded-lg px-4 border focus:outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300"
             />
           </div>
 
