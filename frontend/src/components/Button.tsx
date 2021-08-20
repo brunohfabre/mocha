@@ -27,7 +27,7 @@ export function Button({
     <button
       type={type}
       {...rest}
-      className={`rounded-lg h-10 flex justify-center items-center gap-2 ${getButtonColor()} ${className}`}
+      className={`rounded-lg h-10 flex justify-center items-center gap-2 transition-all ${getButtonColor()} ${className}`}
     >
       {children}
     </button>

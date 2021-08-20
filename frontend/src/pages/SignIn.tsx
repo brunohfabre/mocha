@@ -54,7 +54,7 @@ export function SignIn(): JSX.Element {
               id="email"
               type="text"
               placeholder="Email"
-              className="h-10 bg-gray-100 rounded-lg px-4 border focus:outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300"
+              className="h-10 bg-gray-100 rounded-lg px-4 border outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300 transition-all"
             />
           </div>
 
@@ -66,7 +66,7 @@ export function SignIn(): JSX.Element {
               type="password"
               id="password"
               placeholder="Password"
-              className="h-10 bg-gray-100 rounded-lg px-4 border focus:outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300"
+              className="h-10 bg-gray-100 rounded-lg px-4 border outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300 transition-all"
             />
           </div>
 
@@ -82,7 +82,7 @@ export function SignIn(): JSX.Element {
 
         <Link
           to="/forgot"
-          className="self-center underline text-sm text-gray-800 hover:text-purple-500 mt-8"
+          className="self-center underline text-sm text-gray-800 hover:text-purple-500 mt-8 transition-all"
         >
           Forgot password?
         </Link>
@@ -90,7 +90,7 @@ export function SignIn(): JSX.Element {
           Don&apos;t have account?{' '}
           <Link
             to="/signup"
-            className="underline  text-gray-800 hover:text-purple-500 "
+            className="underline  text-gray-800 hover:text-purple-500 transition-all"
           >
             Sign up
           </Link>
@@ -100,11 +100,17 @@ export function SignIn(): JSX.Element {
       <footer className="self-center p-4 md:p-8 max-w-screen-sm text-center text-xs text-gray-300">
         By clicking “Continue with GitHub/Email” above, you acknowledge that you
         have read and understood, and agree to Mocha&apos;s{' '}
-        <Link to="/terms" className="underline hover:text-purple-500">
+        <Link
+          to="/terms"
+          className="underline hover:text-purple-500 transition-all"
+        >
           Terms & Conditions
         </Link>{' '}
         and{' '}
-        <Link to="/privacypolicy" className="underline hover:text-purple-500">
+        <Link
+          to="/privacypolicy"
+          className="underline hover:text-purple-500 transition-all"
+        >
           Privacy Policy
         </Link>
         .
