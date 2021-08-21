@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useContext } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import LogoBlackImage from '../assets/images/logo_black.svg';
@@ -46,13 +47,15 @@ export function SignIn(): JSX.Element {
 
       const { email, password } = data;
 
-      signIn({ email, password });
+      await signIn({ email, password });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
 
         formRef.current?.setErrors(errors);
       }
+
+      toast.error(err.data?.message);
     } finally {
       setLoading(false);
     }

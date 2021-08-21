@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
+import { toast } from 'react-toastify';
+
 import { api } from '../services/api';
 
 type User = {
@@ -33,6 +35,14 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
 
   const isAuthenticated = !!user;
 
+  function signOut(): void {
+    localStorage.removeItem('mocha.token');
+
+    setUser(null);
+
+    delete api.defaults.headers.authorization;
+  }
+
   useEffect(() => {
     async function loadUserData(): Promise<void> {
       try {
@@ -44,7 +54,9 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
           setUser(response.data);
         }
       } catch (err) {
-        alert(err.data.message);
+        toast.error(err.data?.message);
+
+        signOut();
       } finally {
         setLoading(false);
       }
@@ -63,14 +75,6 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
     api.defaults.headers.authorization = `Bearer ${token}`;
 
     setUser(userData);
-  }
-
-  function signOut(): void {
-    localStorage.removeItem('mocha.token');
-
-    setUser(null);
-
-    delete api.defaults.headers.authorization;
   }
 
   return (
