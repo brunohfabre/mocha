@@ -1,16 +1,62 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/web';
 import { Link, useHistory } from 'react-router-dom';
+import * as Yup from 'yup';
 
 import LogoBlackImage from '../assets/images/logo_black.svg';
 import { Button } from '../components/Button';
+import { Input } from '../components/Form/Input';
+import { AuthContext } from '../contexts/AuthContext';
+import getValidationErrors from '../helpers/getValidationErrors';
+
+interface SignInData {
+  email: string;
+  password: string;
+}
 
 export function SignIn(): JSX.Element {
+  const { signIn } = useContext(AuthContext);
+
   const history = useHistory();
+
+  const formRef = useRef<FormHandles>(null);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     document.title = 'Sign in | Mocha';
   }, []);
+
+  async function handleSubmit(data: SignInData): Promise<void> {
+    try {
+      setLoading(true);
+
+      formRef.current?.setErrors({});
+
+      const schema = Yup.object().shape({
+        email: Yup.string().email().required(),
+        password: Yup.string().required(),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      const { email, password } = data;
+
+      signIn({ email, password });
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="h-screen flex flex-col justify-between">
@@ -45,40 +91,24 @@ export function SignIn(): JSX.Element {
           <hr className="w-full" />
         </div>
 
-        <form className="flex flex-col">
-          <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm text-gray-500 mb-1">
-              Email
-            </label>
-            <input
-              id="email"
-              type="text"
-              placeholder="Email"
-              className="h-10 bg-gray-100 rounded-lg px-4 border outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300 transition-all"
-            />
-          </div>
-
-          <div className="flex flex-col mt-2">
-            <label htmlFor="password" className="text-sm text-gray-500 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Password"
-              className="h-10 bg-gray-100 rounded-lg px-4 border outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300 transition-all"
-            />
-          </div>
+        <Form ref={formRef} onSubmit={handleSubmit} className="flex flex-col">
+          <Input name="email" label="Email" />
+          <Input
+            name="password"
+            type="password"
+            label="Password"
+            className="mt-2"
+          />
 
           <Button
-            type="button"
-            color="purple"
+            type="submit"
+            color="primary"
             className="mt-4"
-            onClick={() => history.push('/home')}
+            isLoading={loading}
           >
             Sign in
           </Button>
-        </form>
+        </Form>
 
         <Link
           to="/forgot"

@@ -34,6 +34,7 @@
     "react-hooks/exhaustive-deps": "warn",
     "react/button-has-type": "off",
     "react/require-default-props": "off",
+    "no-param-reassign": "off",
     "import-helpers/order-imports": [
       "warn",
       {
