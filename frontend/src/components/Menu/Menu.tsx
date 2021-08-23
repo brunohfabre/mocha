@@ -1,42 +1,34 @@
-import { useContext, ReactNode, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
+import { Placement } from '@popperjs/core';
 import { usePopper } from 'react-popper';
 
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 
-interface DropdownProps {
-  children: ReactNode;
+interface MenuProps {
+  children: any;
+  placement: Placement;
 }
 
-function useOutsideAlerter(ref: any) {
-  useEffect(() => {
-    /**
-     * Alert if clicked on outside of element
-     */
-    function handleClickOutside(event: any) {
-      if (ref && !ref.contains(event.target)) {
-        alert('You clicked outside of me!');
-      }
-    }
-    // Bind the event listener
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [ref]);
-}
-
-export function Dropdown({ children }: DropdownProps): JSX.Element {
+export function Menu({ children, placement }: MenuProps): JSX.Element {
   const { signOut } = useContext(AuthContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [referenceElement, setReferenceElement] = useState<any>(null);
   const [popperElement, setPopperElement] = useState<any>(null);
-  const [arrowElement, setArrowElement] = useState<any>(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'bottom-end',
-    modifiers: [{ name: 'arrow', options: { element: arrowElement } }],
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset:
+            placement.includes('bottom') || placement.includes('top')
+              ? [0, 10]
+              : [10, 0],
+        },
+      },
+    ],
   });
 
   useEffect(() => {
@@ -45,10 +37,9 @@ export function Dropdown({ children }: DropdownProps): JSX.Element {
         setIsOpen(false);
       }
     }
-    // Bind the event listener
     document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
-      // Unbind the event listener on clean up
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [popperElement, isOpen]);
@@ -69,17 +60,15 @@ export function Dropdown({ children }: DropdownProps): JSX.Element {
     <>
       <button
         ref={setReferenceElement}
-        className="relative h-full cursor-pointer"
+        className="cursor-pointer"
         onClick={handleToggleMenu}
-        // onMouseEnter={showToolTip}
-        // onMouseLeave={hideToolTip}
       >
-        {children}
+        {children[0]}
       </button>
 
       <div
         ref={setPopperElement}
-        className={`bg-white p-4 shadow-md rounded ${
+        className={`bg-white py-2 shadow-md rounded border border-gray-200 ${
           isOpen ? 'visible' : 'invisible'
         }`}
         style={styles.popper}
@@ -92,7 +81,7 @@ export function Dropdown({ children }: DropdownProps): JSX.Element {
           onClick={() => signOut()}
           className="text-red-500"
         >
-          Sign out
+          {children[1]}
         </button>
       </div>
     </>

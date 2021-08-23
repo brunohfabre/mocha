@@ -4,14 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { User } from '@modules/users/entities/User';
-
-import { NoteItem } from './NoteItem';
 
 @Entity('notes')
 export class Note {
@@ -22,7 +19,7 @@ export class Note {
   title: string;
 
   @Column('text')
-  description: string;
+  content: string;
 
   @Column()
   user_id: string;
@@ -30,9 +27,6 @@ export class Note {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @OneToMany(() => NoteItem, item => item.note)
-  items: NoteItem[];
 
   @CreateDateColumn()
   created_at: Date;

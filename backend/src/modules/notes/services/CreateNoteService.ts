@@ -4,21 +4,17 @@ import { Note } from '../entities/Note';
 
 interface IRequest {
   title: string;
-  description: string;
+  content: string;
   user_id: string;
 }
 
 export class CreateNoteService {
-  public async execute({
-    title,
-    description,
-    user_id,
-  }: IRequest): Promise<Note> {
+  public async execute({ title, content, user_id }: IRequest): Promise<Note> {
     const notesRepository = getRepository(Note);
 
     const note = notesRepository.create({
       title,
-      description,
+      content,
       user_id,
     });
 

@@ -7,6 +7,8 @@ import {
 } from 'react-router-dom';
 
 import { AuthContext } from '../contexts/AuthContext';
+import { AuthLayout } from '../pages/layouts/AuthLayout';
+import { DefaultLayout } from '../pages/layouts/DefaultLayout';
 
 interface RouteProps extends RRDRouteProps {
   component: any;
@@ -29,10 +31,14 @@ export function Route({
   }
 
   if (isAuthenticated && !isPrivate) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/notes" />;
   }
 
-  // const Layout = token ? DefaultLayout : AuthLayout;
+  const Layout = isAuthenticated ? DefaultLayout : AuthLayout;
 
-  return <RRDRoute {...rest} render={props => <Component {...props} />} />;
+  return (
+    <Layout>
+      <RRDRoute {...rest} render={props => <Component {...props} />} />
+    </Layout>
+  );
 }

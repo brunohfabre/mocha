@@ -4,8 +4,8 @@ import { getRepository } from 'typeorm';
 import { AppError } from '@shared/errors/AppError';
 
 import { Note } from '../entities/Note';
-import { NoteItem } from '../entities/NoteItem';
 import { CreateNoteService } from '../services/CreateNoteService';
+import { UpdateSingleNoteService } from '../services/UpdateSingleNoteService';
 
 export class NotesController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -16,6 +16,9 @@ export class NotesController {
     const notes = await notesRepository.find({
       where: {
         user_id: id,
+      },
+      order: {
+        created_at: 'DESC',
       },
     });
 
@@ -33,7 +36,6 @@ export class NotesController {
         id,
         user_id,
       },
-      relations: ['items'],
     });
 
     return response.json(notes);
@@ -41,58 +43,38 @@ export class NotesController {
 
   public async create(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const { title, description } = request.body;
+    const { title, content } = request.body;
 
     const createNoteService = new CreateNoteService();
 
     const note = await createNoteService.execute({
       title,
-      description,
+      content,
       user_id: id,
     });
 
     return response.json(note);
   }
 
-  public async update(request: Request, response: Response): Promise<Response> {
-    const { id: user_id } = request.user;
-    const { id } = request.params;
-    const { items } = request.body;
+  public async updateSingle(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id, field } = request.params;
+    const { value } = request.body;
 
-    const noteItemsRepository = getRepository(NoteItem);
-    const notesRepository = getRepository(Note);
-
-    const note = await notesRepository.findOne(id);
-
-    if (!note) {
-      throw new AppError('Note not found.');
+    if (field !== 'title' && field !== 'content') {
+      throw new AppError('Field not title or content');
     }
 
-    const noteItemsToRemove = await noteItemsRepository.find({
-      where: {
-        note_id: id,
-      },
+    const updateSingleNoteService = new UpdateSingleNoteService();
+
+    const note = await updateSingleNoteService.execute({
+      id,
+      field,
+      value,
     });
 
-    if (noteItemsToRemove.length) {
-      await noteItemsRepository.delete(noteItemsToRemove.map(item => item.id));
-    }
-
-    const noteItems: NoteItem[] = [];
-
-    items.forEach((item: string) => {
-      const noteItemCreated = noteItemsRepository.create({
-        content: item,
-        note_id: id,
-        user_id,
-        tag: '',
-      });
-
-      noteItems.push(noteItemCreated);
-    });
-
-    const noteItemsCreated = await noteItemsRepository.save(noteItems);
-
-    return response.json(noteItemsCreated);
+    return response.json(note);
   }
 }
