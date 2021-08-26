@@ -1,16 +1,13 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
-import debounce from 'lodash.debounce';
-import ContentEditable from 'react-contenteditable';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import { Button } from '../components/Button';
 import { Input } from '../components/Form/Input';
-import { Modal } from '../components/Modal';
-import { Spin } from '../components/Spin';
 import getValidationErrors from '../helpers/getValidationErrors';
 import { api } from '../services/api';
 
@@ -24,22 +21,21 @@ type NoteType = {
 };
 
 interface FormData {
-  title: string;
+  content: string;
 }
 
 export function Notes(): JSX.Element {
   const formRef = useRef<FormHandles>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [loading, setLoading] = useState(false);
-  const [updateLoading, setUpdateLoading] = useState(false);
-  const [notes, setNotes] = useState<NoteType[]>([]);
-  const [note, setNote] = useState<NoteType | null>(null);
+  const history = useHistory();
 
-  const [titleInput, setTitleInput] = useState('');
-  const [contentInput, setContentInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [notes, setNotes] = useState<NoteType[]>([]);
 
   useEffect(() => {
+    document.title = 'Notes | Mocha';
+
     async function loadNotes(): Promise<void> {
       const response = await api.get('/notes');
 
@@ -66,170 +62,45 @@ export function Notes(): JSX.Element {
     };
   }, []);
 
-  function handleCloseModal(): void {
-    setNote(null);
-    setTitleInput('');
-    setContentInput('');
-  }
-
-  async function handleSubmit(data: FormData): Promise<void> {
+  async function handleCreateNewNote(): Promise<void> {
     try {
       setLoading(true);
 
-      formRef.current?.setErrors({});
-
-      const schema = Yup.object().shape({
-        title: Yup.string().required(),
-      });
-
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-
-      const { title } = data;
-
       const response = await api.post('/notes', {
-        title,
+        title: '',
         content: '',
       });
 
-      setNotes([response.data, ...notes]);
-
-      setNote(response.data);
-      setTitleInput(response.data.title);
-
-      formRef.current?.reset();
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
-
-        formRef.current?.setErrors(errors);
-      }
-
-      toast.error(err.data?.message);
+      history.push(`/notes/${response.data.id}`);
     } finally {
       setLoading(false);
     }
   }
 
-  async function changeTitleHandler(value: string): Promise<void> {
-    try {
-      setUpdateLoading(true);
-
-      const response = await api.patch(`/notes/${note?.id}/title`, { value });
-
-      setNotes(
-        notes.map(item =>
-          item.id === response.data.id ? response.data : item,
-        ),
-      );
-    } finally {
-      setUpdateLoading(false);
-    }
-  }
-
-  async function changeContentHandler(value: string): Promise<void> {
-    try {
-      setUpdateLoading(true);
-
-      const response = await api.patch(`/notes/${note?.id}/content`, { value });
-
-      setNotes(
-        notes.map(item =>
-          item.id === response.data.id ? response.data : item,
-        ),
-      );
-    } finally {
-      setUpdateLoading(false);
-    }
-  }
-
-  const debouncedChangeTitle = useCallback(debounce(changeTitleHandler, 300), [
-    note,
-  ]);
-  const debouncedChangeContent = useCallback(
-    debounce(changeContentHandler, 300),
-    [note],
-  );
-
-  function handleSelectNote(item: NoteType): void {
-    setNote(item);
-    setTitleInput(item.title);
-    setContentInput(item.content);
-  }
-
   return (
-    <>
-      <Modal isOpen={!!note} onRequestClose={handleCloseModal}>
-        <header className="flex justify-between h-8 items-center">
-          <input
-            type="text"
-            value={titleInput}
-            onChange={e => {
-              setTitleInput(e.target.value);
-              debouncedChangeTitle(e.target.value);
-            }}
-            className="bg-gray-100"
-          />
-          {updateLoading && <Spin fill="black" />}
-        </header>
-        <ContentEditable
-          className="bg-gray-100 mt-4"
-          html={contentInput}
-          onPaste={e => {
-            e.preventDefault();
-            const clipboardData = e.clipboardData
-              .getData('text/plain')
-              .split('\n');
+    <div className="max-w-6xl mx-auto p-4">
+      <header className="flex justify-end">
+        <Button
+          type="button"
+          onClick={handleCreateNewNote}
+          color="primary"
+          isLoading={loading}
+        >
+          New note
+        </Button>
+      </header>
 
-            let data = '';
-
-            clipboardData.forEach(item => {
-              if (data) {
-                data = `${data}<br>${item}`;
-              } else {
-                data = item;
-              }
-            });
-            setContentInput(data);
-            debouncedChangeContent(data);
-          }}
-          onChange={e => {
-            const value = e.target.value
-              .replaceAll('<div>', '<br>')
-              .replaceAll('</div>', '');
-
-            setContentInput(value);
-            debouncedChangeContent(value);
-          }}
-        />
-      </Modal>
-
-      <div>
-        <header className="flex justify-center">
-          <div
-            ref={contentRef}
-            className="bg-white rounded-lg border p-4 mt-4 shadow-sm"
-          >
-            <Form ref={formRef} onSubmit={handleSubmit} className="flex gap-2">
-              <Input name="title" className="w-96" />
-              <Button type="submit" color="primary" isLoading={loading}>
-                Add
-              </Button>
-            </Form>
-          </div>
-        </header>
-
-        {notes.map(item => (
+      <section className="mt-4 grid grid-cols-5 gap-2">
+        {notes.map(note => (
           <button
             type="button"
-            onClick={() => handleSelectNote(item)}
-            className="p-4 hover:bg-red-400"
+            onClick={() => history.push(`/notes/${note.id}`)}
+            className="p-4 bg-white shadow-sm border rounded-lg text-left flex items-start hover:bg-gray-50 h-24 transition"
           >
-            {item.title}
+            {note.title}
           </button>
         ))}
-      </div>
-    </>
+      </section>
+    </div>
   );
 }

@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.contenteditable:empty:before {
+  content: attr(data-placeholder);
+  cursor: text;
+  color: rgb(209, 213, 219);
+}

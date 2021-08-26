@@ -11,9 +11,13 @@ export function Header(): JSX.Element {
 
   return (
     <header className="sticky top-0 h-12 bg-white shadow-sm border-b flex px-4 items-center justify-between">
-      <Link to="/notes">
-        <img src={LogoBlackImage} alt="Mocha" className="w-10" />
-      </Link>
+      <div className="flex items-center">
+        <Link to="/notes">
+          <img src={LogoBlackImage} alt="Mocha" className="w-10" />
+        </Link>
+
+        <p className="ml-8">Notes</p>
+      </div>
 
       <Menu placement="bottom-end">
         <MenuButton>{user?.name || 'Unknow name'}</MenuButton>

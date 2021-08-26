@@ -50,11 +50,11 @@ export function Input({
         id={fieldName}
         ref={inputRef}
         defaultValue={defaultValue}
+        placeholder={label}
         {...rest}
         className={`h-10 bg-gray-100 rounded-lg px-4 border outline-none focus:ring-4 focus:ring-purple-200 focus:bg-white focus:border focus:border-purple-300 transition-all ${
           isErrored && 'border-red-500 bg-red-50'
         }`}
-        placeholder={label}
       />
 
       {isErrored && <span className="text-red-500 text-sm mt-1">{error}</span>}
