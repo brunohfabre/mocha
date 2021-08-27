@@ -14,11 +14,10 @@ interface ParamsData {
 }
 
 export function Note(): JSX.Element {
-  const { getNote, updateNote } = useContext(NotesContext);
+  const { isLoading, getNote, updateNote } = useContext(NotesContext);
   const { id } = useParams<ParamsData>();
 
   const [updateLoading, setUpdateLoading] = useState<string[]>([]);
-  const [note, setNote] = useState<NoteType>({} as NoteType);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -28,7 +27,6 @@ export function Note(): JSX.Element {
     async function loadNote(): Promise<void> {
       const response = await getNote(id);
 
-      setNote(response);
       setTitle(response.title);
       setContent(response.content);
     }
@@ -73,7 +71,7 @@ export function Note(): JSX.Element {
     [],
   );
 
-  if (!note.id) {
+  if (isLoading) {
     return <h3>loading...</h3>;
   }
 
@@ -89,7 +87,6 @@ export function Note(): JSX.Element {
           }}
           className="text-4xl font-semibold placeholder-gray-200 outline-none flex-1 h-11"
           placeholder="Untitled"
-          autoFocus={!title}
         />
 
         {!!updateLoading.length && <Spin fill="black" />}
