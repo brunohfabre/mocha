@@ -95,7 +95,7 @@ export function SignIn(): JSX.Element {
         </div>
 
         <Form ref={formRef} onSubmit={handleSubmit} className="flex flex-col">
-          <Input name="email" label="Email" />
+          <Input type="email" name="email" label="Email" />
           <Input
             name="password"
             type="password"
