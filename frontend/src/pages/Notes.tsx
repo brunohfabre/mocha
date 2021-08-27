@@ -1,40 +1,27 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 
 import { FormHandles } from '@unform/core';
-import { useQuery } from 'react-query';
 import { useHistory } from 'react-router-dom';
 
 import { Button } from '../components/Button';
-import { api } from '../services/api';
-
-type NoteType = {
-  id: string;
-  title: string;
-  content: string;
-  user_id: string;
-  created_at: string;
-  updated_at: string;
-};
+import { NotesContext, NoteType } from '../contexts/NotesContext';
 
 export function Notes(): JSX.Element {
+  const { isLoading, notes, loadNotes, isCreateLoading, createNote } =
+    useContext(NotesContext);
+
   const formRef = useRef<FormHandles>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const history = useHistory();
 
-  const [createLoading, setCreateLoading] = useState(false);
-
   // const [loading, setLoading] = useState(false);
   // const [notes, setNotes] = useState<NoteType[]>([]);
 
-  const { data, isLoading } = useQuery<NoteType[]>('notes', async () => {
-    const response = await api.get('/notes');
-
-    return response.data;
-  });
-
   useEffect(() => {
     document.title = 'Notes | Mocha';
+
+    loadNotes();
 
     // async function loadNotes(): Promise<void> {
     //   const response = await api.get('/notes');
@@ -63,22 +50,13 @@ export function Notes(): JSX.Element {
     };
   }, []);
 
-  async function handleCreateNewNote(): Promise<void> {
-    try {
-      setCreateLoading(true);
+  async function handleCreateNote(): Promise<void> {
+    const id = await createNote();
 
-      const response = await api.post('/notes', {
-        title: '',
-        content: '',
-      });
-
-      history.push(`/notes/${response.data.id}`);
-    } finally {
-      setCreateLoading(false);
-    }
+    history.push(`/notes/${id}`);
   }
 
-  if (isLoading && !data) {
+  if (isLoading) {
     return <p>loading notes</p>;
   }
 
@@ -87,16 +65,16 @@ export function Notes(): JSX.Element {
       <header className="flex justify-end">
         <Button
           type="button"
-          onClick={handleCreateNewNote}
+          onClick={handleCreateNote}
           color="primary"
-          isLoading={createLoading}
+          isLoading={isCreateLoading}
         >
           New note
         </Button>
       </header>
 
       <section className="mt-4 grid grid-cols-5 gap-2">
-        {data?.map(note => (
+        {notes.map(note => (
           <button
             type="button"
             onClick={() => history.push(`/notes/${note.id}`)}

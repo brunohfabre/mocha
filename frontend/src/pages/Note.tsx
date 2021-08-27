@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useContext } from 'react';
 
 import debounce from 'lodash.debounce';
 import ContentEditable from 'react-contenteditable';
@@ -6,28 +6,15 @@ import { useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 
 import { Spin } from '../components/Spin';
+import { NotesContext, NoteType } from '../contexts/NotesContext';
 import { api } from '../services/api';
 
 interface ParamsData {
   id: string;
 }
 
-type ItemType = {
-  id: string;
-  content: string;
-};
-
-type NoteType = {
-  created_at: string;
-  description: string;
-  id: string;
-  items: ItemType[];
-  title: string;
-  updated_at: string;
-  user_id: string;
-};
-
 export function Note(): JSX.Element {
+  const { getNote, updateNote } = useContext(NotesContext);
   const { id } = useParams<ParamsData>();
 
   const [updateLoading, setUpdateLoading] = useState<string[]>([]);
@@ -39,11 +26,11 @@ export function Note(): JSX.Element {
     document.title = 'Note | Mocha';
 
     async function loadNote(): Promise<void> {
-      const response = await api.get(`/notes/${id}`);
+      const response = await getNote(id);
 
-      setNote(response.data);
-      setTitle(response.data.title);
-      setContent(response.data.content);
+      setNote(response);
+      setTitle(response.title);
+      setContent(response.content);
     }
 
     loadNote();
@@ -55,7 +42,9 @@ export function Note(): JSX.Element {
     try {
       setUpdateLoading(state => [...state, loadingId]);
 
-      await api.patch(`/notes/${id}/title`, { value });
+      const response = await api.patch(`/notes/${id}/title`, { value });
+
+      updateNote(response.data);
     } finally {
       setUpdateLoading(state => state.filter(item => item !== loadingId));
     }
@@ -67,7 +56,9 @@ export function Note(): JSX.Element {
     try {
       setUpdateLoading(state => [...state, loadingId]);
 
-      await api.patch(`/notes/${id}/content`, { value });
+      const response = await api.patch(`/notes/${id}/content`, { value });
+
+      updateNote(response.data);
     } finally {
       setUpdateLoading(state => state.filter(item => item !== loadingId));
     }
@@ -98,6 +89,7 @@ export function Note(): JSX.Element {
           }}
           className="text-4xl font-semibold placeholder-gray-200 outline-none flex-1 h-11"
           placeholder="Untitled"
+          autoFocus={!title}
         />
 
         {!!updateLoading.length && <Spin fill="black" />}
