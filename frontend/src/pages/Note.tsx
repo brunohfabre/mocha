@@ -60,6 +60,7 @@ export function Note(): JSX.Element {
       setUpdateLoading(state => state.filter(item => item !== loadingId));
     }
   }
+
   async function changeContentHandler(value: string) {
     const loadingId = uuidV4();
 
@@ -95,7 +96,7 @@ export function Note(): JSX.Element {
             setTitle(e.target.value);
             debouncedChangeTitle(e.target.value);
           }}
-          className="text-4xl font-semibold placeholder-gray-200 outline-none"
+          className="text-4xl font-semibold placeholder-gray-200 outline-none flex-1 h-11"
           placeholder="Untitled"
         />
 
@@ -125,12 +126,15 @@ export function Note(): JSX.Element {
           debouncedChangeContent(data);
         }}
         onChange={e => {
-          const value = e.target.value
-            .replaceAll('<div>', '<br>')
-            .replaceAll('</div>', '');
+          const { value } = e.target;
 
-          setContent(value);
-          debouncedChangeContent(value);
+          if (e.currentTarget.innerText === '\n') {
+            setContent('');
+            debouncedChangeContent('');
+          } else {
+            setContent(value);
+            debouncedChangeContent(value);
+          }
         }}
       />
     </div>
