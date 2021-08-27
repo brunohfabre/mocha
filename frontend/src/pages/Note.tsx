@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 
 import { Spin } from '../components/Spin';
-import { NotesContext, NoteType } from '../contexts/NotesContext';
+import { NotesContext } from '../contexts/NotesContext';
 import { api } from '../services/api';
 
 interface ParamsData {
@@ -22,8 +22,6 @@ export function Note(): JSX.Element {
   const [content, setContent] = useState('');
 
   useEffect(() => {
-    document.title = 'Note | Mocha';
-
     async function loadNote(): Promise<void> {
       const response = await getNote(id);
 
@@ -33,6 +31,14 @@ export function Note(): JSX.Element {
 
     loadNote();
   }, [id]);
+
+  useEffect(() => {
+    if (title) {
+      document.title = `${title} | Mocha`;
+    } else {
+      document.title = 'Untitled | Mocha';
+    }
+  }, [title]);
 
   async function changeTitleHandler(value: string) {
     const loadingId = uuidV4();
