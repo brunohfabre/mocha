@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 
 import { Button } from '../components/Button';
 import { Input } from '../components/Form/Input';
+import { IconButton } from '../components/IconButton';
 import getValidationErrors from '../helpers/getValidationErrors';
 import { api } from '../services/api';
 

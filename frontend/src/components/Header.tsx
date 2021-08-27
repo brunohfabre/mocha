@@ -19,7 +19,7 @@ export function Header(): JSX.Element {
   }
 
   return (
-    <header className="sticky top-0 h-12 bg-white border-b flex px-4 items-center justify-between">
+    <header className="sticky top-0 h-14 bg-white border-b flex px-4 items-center justify-between">
       <div className="flex">
         {hasBack && (
           <button onClick={handleGoBack} className="mr-4">
