@@ -1,15 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 
 import { FormHandles } from '@unform/core';
-import { Form } from '@unform/web';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import * as Yup from 'yup';
 
 import { Button } from '../components/Button';
-import { Input } from '../components/Form/Input';
-import { IconButton } from '../components/IconButton';
-import getValidationErrors from '../helpers/getValidationErrors';
 import { api } from '../services/api';
 
 type NoteType = {
@@ -20,10 +14,6 @@ type NoteType = {
   created_at: string;
   updated_at: string;
 };
-
-interface FormData {
-  content: string;
-}
 
 export function Notes(): JSX.Element {
   const formRef = useRef<FormHandles>(null);
@@ -56,6 +46,7 @@ export function Notes(): JSX.Element {
         }
       }
     }
+
     document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
