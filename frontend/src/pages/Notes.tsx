@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 
 import { FormHandles } from '@unform/core';
+import { useQuery } from 'react-query';
 import { useHistory } from 'react-router-dom';
 
 import { Button } from '../components/Button';
@@ -21,19 +22,27 @@ export function Notes(): JSX.Element {
 
   const history = useHistory();
 
-  const [loading, setLoading] = useState(false);
-  const [notes, setNotes] = useState<NoteType[]>([]);
+  const [createLoading, setCreateLoading] = useState(false);
+
+  // const [loading, setLoading] = useState(false);
+  // const [notes, setNotes] = useState<NoteType[]>([]);
+
+  const { data, isLoading } = useQuery<NoteType[]>('notes', async () => {
+    const response = await api.get('/notes');
+
+    return response.data;
+  });
 
   useEffect(() => {
     document.title = 'Notes | Mocha';
 
-    async function loadNotes(): Promise<void> {
-      const response = await api.get('/notes');
+    // async function loadNotes(): Promise<void> {
+    //   const response = await api.get('/notes');
 
-      setNotes(response.data);
-    }
+    //   setNotes(response.data);
+    // }
 
-    loadNotes();
+    // loadNotes();
   }, []);
 
   useEffect(() => {
@@ -56,7 +65,7 @@ export function Notes(): JSX.Element {
 
   async function handleCreateNewNote(): Promise<void> {
     try {
-      setLoading(true);
+      setCreateLoading(true);
 
       const response = await api.post('/notes', {
         title: '',
@@ -65,8 +74,12 @@ export function Notes(): JSX.Element {
 
       history.push(`/notes/${response.data.id}`);
     } finally {
-      setLoading(false);
+      setCreateLoading(false);
     }
+  }
+
+  if (isLoading && !data) {
+    return <p>loading notes</p>;
   }
 
   return (
@@ -76,14 +89,14 @@ export function Notes(): JSX.Element {
           type="button"
           onClick={handleCreateNewNote}
           color="primary"
-          isLoading={loading}
+          isLoading={createLoading}
         >
           New note
         </Button>
       </header>
 
       <section className="mt-4 grid grid-cols-5 gap-2">
-        {notes.map(note => (
+        {data?.map(note => (
           <button
             type="button"
             onClick={() => history.push(`/notes/${note.id}`)}
