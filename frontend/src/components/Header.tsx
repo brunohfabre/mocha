@@ -19,10 +19,13 @@ export function Header(): JSX.Element {
   }
 
   return (
-    <header className="sticky top-0 h-14 bg-white border-b flex px-4 items-center justify-between">
-      <div className="flex">
+    <header className="sticky top-0 h-14 bg-white border-b flex pr-4 items-center justify-between">
+      <div className="flex items-center">
         {hasBack && (
-          <button onClick={handleGoBack} className="mr-4">
+          <button
+            onClick={handleGoBack}
+            className="flex justify-center items-center w-14 h-14"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 fill-current text-gray-400"
@@ -40,7 +43,7 @@ export function Header(): JSX.Element {
           </button>
         )}
 
-        <p>{routeName}</p>
+        <p className={!hasBack ? 'ml-4' : ''}>{routeName}</p>
       </div>
 
       <Menu placement="bottom-end">
