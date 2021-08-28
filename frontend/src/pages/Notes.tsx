@@ -60,13 +60,13 @@ export function Notes(): JSX.Element {
       </header>
 
       {isLoading ? (
-        <section className="mt-4 grid grid-cols-5 gap-2">
+        <section className="mt-4 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
           <div className="h-24 bg-gray-200 animate-pulse rounded-lg" />
           <div className="h-24 bg-gray-200 animate-pulse rounded-lg" />
           <div className="h-24 bg-gray-200 animate-pulse rounded-lg" />
         </section>
       ) : (
-        <section className="mt-4 grid grid-cols-5 gap-2">
+        <section className="mt-4 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
           {notes.map(note => (
             <button
               type="button"

@@ -8,7 +8,7 @@ export function Sidebar(): JSX.Element {
   const routeName = location.pathname.split('/')[1];
 
   return (
-    <div className="bg-white border-r">
+    <div className="bg-white border-r hidden md:block">
       <Link to="/notes" className="w-14 h-14 flex justify-center items-center">
         <img src={LogoBlackImage} alt="Mocha" className="w-9" />
       </Link>
