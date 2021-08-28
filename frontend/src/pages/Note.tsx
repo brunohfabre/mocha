@@ -97,7 +97,7 @@ export function Note(): JSX.Element {
                 setTitle(e.target.value);
                 debouncedChangeTitle(e.target.value);
               }}
-              className="text-4xl font-semibold placeholder-gray-200 outline-none flex-1 h-11"
+              className="text-4xl font-semibold placeholder-gray-200 outline-none flex-1 h-11 w-full"
               placeholder="Untitled"
             />
 
