@@ -83,55 +83,67 @@ export function Note(): JSX.Element {
 
   return (
     <div className="px-4 py-8 max-w-4xl mx-auto">
-      <section className="flex justify-between items-center">
-        <input
-          type="text"
-          value={title}
-          onChange={e => {
-            setTitle(e.target.value);
-            debouncedChangeTitle(e.target.value);
-          }}
-          className="text-4xl font-semibold placeholder-gray-200 outline-none flex-1 h-11"
-          placeholder="Untitled"
-        />
+      {isLoading ? (
+        <>
+          <section className="h-11 rounded-lg bg-gray-200 animate-pulse" />
+          <div className="h-6 rounded-lg bg-gray-200 animate-pulse mt-4 max-w-md" />
+          <div className="h-6 rounded-lg bg-gray-200 animate-pulse mt-2 max-w-sm" />
+          <div className="h-6 rounded-lg bg-gray-200 animate-pulse mt-2 max-w-lg" />
+          <div className="h-6 rounded-lg bg-gray-200 animate-pulse mt-2 max-w-xs" />
+        </>
+      ) : (
+        <>
+          <section className="flex justify-between items-center">
+            <input
+              type="text"
+              value={title}
+              onChange={e => {
+                setTitle(e.target.value);
+                debouncedChangeTitle(e.target.value);
+              }}
+              className="text-4xl font-semibold placeholder-gray-200 outline-none flex-1 h-11"
+              placeholder="Untitled"
+            />
 
-        {!!updateLoading.length && <Spin fill="black" />}
-      </section>
+            {!!updateLoading.length && <Spin fill="black" />}
+          </section>
 
-      <ContentEditable
-        className="contenteditable mt-4 z-50 outline-none"
-        data-placeholder="Type text here..."
-        html={content}
-        onPaste={e => {
-          e.preventDefault();
-          const clipboardData = e.clipboardData
-            .getData('text/plain')
-            .split('\n');
+          <ContentEditable
+            className="contenteditable mt-4 z-50 outline-none"
+            data-placeholder="Type text here..."
+            html={content}
+            onPaste={e => {
+              e.preventDefault();
+              const clipboardData = e.clipboardData
+                .getData('text/plain')
+                .split('\n');
 
-          let data = '';
+              let data = '';
 
-          clipboardData.forEach(item => {
-            if (data) {
-              data = `${data}<br>${item}`;
-            } else {
-              data = item;
-            }
-          });
-          setContent(data);
-          debouncedChangeContent(data);
-        }}
-        onChange={e => {
-          const { value } = e.target;
+              clipboardData.forEach(item => {
+                if (data) {
+                  data = `${data}<br>${item}`;
+                } else {
+                  data = item;
+                }
+              });
+              setContent(data);
+              debouncedChangeContent(data);
+            }}
+            onChange={e => {
+              const { value } = e.target;
 
-          if (e.currentTarget.innerText === '\n') {
-            setContent('');
-            debouncedChangeContent('');
-          } else {
-            setContent(value);
-            debouncedChangeContent(value);
-          }
-        }}
-      />
+              if (e.currentTarget.innerText === '\n') {
+                setContent('');
+                debouncedChangeContent('');
+              } else {
+                setContent(value);
+                debouncedChangeContent(value);
+              }
+            }}
+          />
+        </>
+      )}
     </div>
   );
 }
