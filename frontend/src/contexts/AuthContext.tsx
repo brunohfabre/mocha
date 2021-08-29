@@ -16,7 +16,7 @@ type SignInData = {
 };
 
 type AuthContextType = {
-  loading: boolean;
+  isLoading: boolean;
   user: User | null;
   isAuthenticated: boolean;
   signIn: (data: SignInData) => Promise<void>;
@@ -30,7 +30,7 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
   const isAuthenticated = !!user;
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
 
         signOut();
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
 
@@ -80,7 +80,7 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   return (
     <AuthContext.Provider
       value={{
-        loading,
+        isLoading,
         user,
         isAuthenticated,
         signIn,

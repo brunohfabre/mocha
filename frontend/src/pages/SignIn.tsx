@@ -24,7 +24,7 @@ export function SignIn(): JSX.Element {
 
   const formRef = useRef<FormHandles>(null);
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     document.title = 'Sign in | Mocha';
@@ -32,7 +32,7 @@ export function SignIn(): JSX.Element {
 
   async function handleSubmit(data: SignInData): Promise<void> {
     try {
-      setLoading(true);
+      setIsLoading(true);
 
       formRef.current?.setErrors({});
 
@@ -57,7 +57,7 @@ export function SignIn(): JSX.Element {
 
       toast.error(err.data?.message);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 
@@ -107,7 +107,7 @@ export function SignIn(): JSX.Element {
             type="submit"
             color="primary"
             className="mt-4"
-            isLoading={loading}
+            isLoading={isLoading}
           >
             Sign in
           </Button>

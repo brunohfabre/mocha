@@ -6,6 +6,7 @@ import {
   RouteProps as RRDRouteProps,
 } from 'react-router-dom';
 
+import LogoBlackImage from '../assets/images/logo_black.svg';
 import { AuthContext } from '../contexts/AuthContext';
 import { AuthLayout } from '../pages/layouts/AuthLayout';
 import { DefaultLayout } from '../pages/layouts/DefaultLayout';
@@ -20,10 +21,14 @@ export function Route({
   isPrivate = true,
   ...rest
 }: RouteProps): JSX.Element {
-  const { isAuthenticated, loading } = useContext(AuthContext);
+  const { isAuthenticated, isLoading } = useContext(AuthContext);
 
-  if (loading) {
-    return <h3>Loading...</h3>;
+  if (isLoading) {
+    return (
+      <div className="w-screen h-screen flex justify-center items-center">
+        <img src={LogoBlackImage} alt="Mocha" className="w-16 animate-bounce" />
+      </div>
+    );
   }
 
   if (!isAuthenticated && isPrivate) {
