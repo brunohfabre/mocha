@@ -56,6 +56,27 @@ export class NotesController {
     return response.json(note);
   }
 
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id: userId } = request.user;
+    const { id } = request.params;
+
+    const notesRepository = getRepository(Note);
+
+    const note = await notesRepository.findOne(id);
+
+    if (!note) {
+      throw new AppError('Note not exists');
+    }
+
+    if (note.user_id !== userId) {
+      throw new AppError('It is not possible to delete this note.');
+    }
+
+    await notesRepository.remove(note);
+
+    return response.send(id);
+  }
+
   public async updateSingle(
     request: Request,
     response: Response,

@@ -6,6 +6,8 @@ interface IconButtonProps {
   isLoading?: boolean;
   className?: string;
   disabled?: boolean;
+  size?: 'small' | 'medium';
+  onClick?: (e: any) => void;
 }
 
 export function IconButton({
@@ -14,6 +16,8 @@ export function IconButton({
   isLoading,
   className,
   disabled,
+  size,
+  onClick,
 }: IconButtonProps): JSX.Element {
   const isDisabled = isLoading || disabled;
 
@@ -48,10 +52,17 @@ export function IconButton({
   return (
     <button
       type="button"
-      className={`rounded-lg h-10 w-10 flex justify-center items-center transition-all ${getButtonColor()} ${className} ${
+      className={`rounded-lg flex justify-center items-center transition-all p-1.5 ${
+        size === 'small' ? 'h-7 w-7' : 'h-10 w-10'
+      } ${getButtonColor()} ${className} ${
         isDisabled && 'opacity-60 cursor-not-allowed'
       }`}
       disabled={isDisabled}
+      onClick={e => {
+        if (onClick) {
+          onClick(e);
+        }
+      }}
     >
       {children}
     </button>

@@ -61,7 +61,11 @@ export function Menu({ children, placement }: MenuProps): JSX.Element {
       <button
         ref={setReferenceElement}
         className="cursor-pointer"
-        onClick={handleToggleMenu}
+        onClick={e => {
+          handleToggleMenu();
+
+          e.stopPropagation();
+        }}
       >
         {children[0]}
       </button>
@@ -76,13 +80,7 @@ export function Menu({ children, placement }: MenuProps): JSX.Element {
         // onMouseEnter={showToolTip}
         // onMouseLeave={hideToolTip}
       >
-        <button
-          type="button"
-          onClick={() => signOut()}
-          className="text-red-500"
-        >
-          {children[1]}
-        </button>
+        {children[1]}
       </div>
     </>
   );

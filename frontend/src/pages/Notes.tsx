@@ -4,11 +4,20 @@ import { FormHandles } from '@unform/core';
 import { useHistory } from 'react-router-dom';
 
 import { Button } from '../components/Button';
+import { IconButton } from '../components/IconButton';
+import { Menu, MenuButton, MenuItem, MenuList } from '../components/Menu';
 import { NotesContext } from '../contexts/NotesContext';
 
 export function Notes(): JSX.Element {
-  const { isLoading, notes, loadNotes, isCreateLoading, createNote } =
-    useContext(NotesContext);
+  const {
+    isLoading,
+    isDeleteLoading,
+    deleteNote,
+    notes,
+    loadNotes,
+    isCreateLoading,
+    createNote,
+  } = useContext(NotesContext);
 
   const formRef = useRef<FormHandles>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -73,7 +82,30 @@ export function Notes(): JSX.Element {
               onClick={() => history.push(`/notes/${note.id}`)}
               className="p-4 bg-white shadow-sm border rounded-lg text-left flex items-start hover:bg-gray-50 h-24 transition"
             >
-              {note.title}
+              <span className="flex-1">{note.title}</span>
+
+              <Menu placement="bottom-end">
+                <MenuButton>
+                  <IconButton size="small">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                    </svg>
+                  </IconButton>
+                </MenuButton>
+
+                <MenuList>
+                  <MenuItem
+                    onClick={() => deleteNote(note.id)}
+                    isLoading={isDeleteLoading}
+                  >
+                    Delete
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </button>
           ))}
         </section>

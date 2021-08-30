@@ -1,7 +1,5 @@
 import { ReactNode, createContext, useState } from 'react';
 
-import { useHistory } from 'react-router-dom';
-
 import { api } from '../services/api';
 
 export type NoteType = {
@@ -15,12 +13,14 @@ export type NoteType = {
 
 type NotesContextType = {
   isLoading: boolean;
+  isDeleteLoading: boolean;
   isCreateLoading: boolean;
   notes: NoteType[];
   loadNotes: () => void;
   getNote: (id: string) => Promise<NoteType>;
   updateNote: (note: NoteType) => void;
   createNote: () => Promise<string>;
+  deleteNote: (id: string) => Promise<void>;
 };
 
 export const NotesContext = createContext({} as NotesContextType);
@@ -31,6 +31,7 @@ interface NotesProviderProps {
 
 export function NotesProvider({ children }: NotesProviderProps): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   const [notes, setNotes] = useState<NoteType[]>([]);
 
@@ -89,16 +90,30 @@ export function NotesProvider({ children }: NotesProviderProps): JSX.Element {
     }
   }
 
+  async function deleteNote(id: string): Promise<void> {
+    try {
+      setIsDeleteLoading(true);
+
+      await api.delete(`/notes/${id}`);
+
+      setNotes(notes.filter(note => note.id !== id));
+    } finally {
+      setIsDeleteLoading(false);
+    }
+  }
+
   return (
     <NotesContext.Provider
       value={{
         isLoading,
+        isDeleteLoading,
         isCreateLoading,
         notes,
         loadNotes,
         getNote,
         updateNote,
         createNote,
+        deleteNote,
       }}
     >
       {children}
