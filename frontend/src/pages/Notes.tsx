@@ -101,6 +101,7 @@ export function Notes(): JSX.Element {
                   <MenuItem
                     onClick={() => deleteNote(note.id)}
                     isLoading={isDeleteLoading}
+                    type="danger"
                   >
                     Delete
                   </MenuItem>

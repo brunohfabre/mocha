@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
 
 import { Spin } from './Spin';
 
@@ -17,6 +17,8 @@ export function Button({
   disabled,
   ...rest
 }: ButtonProps): JSX.Element {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   const isDisabled = isLoading || disabled;
 
   function getButtonColor(): string {
@@ -49,11 +51,20 @@ export function Button({
 
   return (
     <button
+      ref={buttonRef}
       type={type}
       {...rest}
       className={`rounded-lg h-10 px-4 flex justify-center items-center gap-2 transition-all ${getButtonColor()} ${className} ${
         isDisabled && 'opacity-60 cursor-not-allowed'
       }`}
+      style={
+        isDisabled
+          ? {
+              width: buttonRef.current?.offsetWidth,
+              height: buttonRef.current?.offsetHeight,
+            }
+          : {}
+      }
       disabled={isDisabled}
     >
       {isLoading ? <Spin /> : children}

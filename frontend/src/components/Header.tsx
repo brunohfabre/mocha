@@ -50,7 +50,9 @@ export function Header(): JSX.Element {
         <MenuButton>{user?.name || 'Unknow name'}</MenuButton>
 
         <MenuList>
-          <MenuItem onClick={signOut}>Sign out</MenuItem>
+          <MenuItem onClick={signOut} type="danger">
+            Sign out
+          </MenuItem>
         </MenuList>
       </Menu>
     </header>
