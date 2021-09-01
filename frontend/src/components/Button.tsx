@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
+import React, { ButtonHTMLAttributes, useRef } from 'react';
 
 import { Spin } from './Spin';
 

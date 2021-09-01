@@ -1,6 +1,6 @@
-import { useRef, ReactNode } from 'react';
+import React, { useRef, ReactNode } from 'react';
 
-import { Spin } from '../Spin';
+import { Spin } from '@components/Spin';
 
 interface MenuItemProps {
   children: ReactNode;

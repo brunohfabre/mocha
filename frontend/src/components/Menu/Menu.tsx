@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Placement } from '@popperjs/core';
 import { usePopper } from 'react-popper';
 
-import { AuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 interface MenuProps {
   children: any;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -6,11 +6,14 @@ import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
-import LogoBlackImage from '../assets/images/logo_black.svg';
-import { Button } from '../components/Button';
-import { Input } from '../components/Form/Input';
-import { AuthContext } from '../contexts/AuthContext';
-import getValidationErrors from '../helpers/getValidationErrors';
+import LogoBlackImage from '@assets/images/logo_black.svg';
+
+import getValidationErrors from '@helpers/getValidationErrors';
+
+import { AuthContext } from '@contexts/AuthContext';
+
+import { Button } from '@components/Button';
+import { Input } from '@components/Form/Input';
 
 interface SignInData {
   email: string;

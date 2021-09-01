@@ -10,6 +10,7 @@
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files"
   },
   "dependencies": {
+    "@prisma/client": "2.30.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -44,6 +45,7 @@
     "eslint-plugin-import-helpers": "^1.1.0",
     "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.3.2",
+    "prisma": "2.30.2",
     "ts-node-dev": "^1.1.8",
     "tsconfig-paths": "^3.10.1"
   }

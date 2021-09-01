@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useState, useContext } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 
 import debounce from 'lodash.debounce';
 import ContentEditable from 'react-contenteditable';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 
-import { Spin } from '../components/Spin';
-import { NotesContext } from '../contexts/NotesContext';
-import { api } from '../services/api';
+import { api } from '@services/api';
+
+import { NotesContext } from '@contexts/NotesContext';
+
+import { Spin } from '@components/Spin';
 
 interface ParamsData {
   id: string;

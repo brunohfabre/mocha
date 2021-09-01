@@ -1,6 +1,8 @@
+import React from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 
-import LogoBlackImage from '../assets/images/logo_black.svg';
+import LogoBlackImage from '@assets/images/logo_black.svg';
 
 export function Sidebar(): JSX.Element {
   const location = useLocation();

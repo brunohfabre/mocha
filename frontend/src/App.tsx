@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Modal from 'react-modal';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';

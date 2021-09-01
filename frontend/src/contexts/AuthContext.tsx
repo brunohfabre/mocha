@@ -1,8 +1,8 @@
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 
-import { api } from '../services/api';
+import { api } from '@services/api';
 
 type User = {
   id: string;

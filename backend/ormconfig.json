@@ -1,0 +1,17 @@
+{
+  "type": "postgres",
+  "host": "143.198.138.221",
+  "port": 5432,
+  "username": "postgres",
+  "password": "docker",
+  "database": "mocha",
+  "entities": [
+    "./src/modules/**/entities/*.ts"
+  ],
+  "migrations": [
+    "./src/shared/database/migrations/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "./src/shared/database/migrations"
+  }
+}

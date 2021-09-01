@@ -1,6 +1,6 @@
-import { ReactNode, createContext, useState } from 'react';
+import React, { ReactNode, createContext, useState } from 'react';
 
-import { api } from '../services/api';
+import { api } from '@services/api';
 
 export type NoteType = {
   id: string;

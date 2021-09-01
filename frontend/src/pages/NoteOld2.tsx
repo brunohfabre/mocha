@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-import debounce from 'lodash.debounce';
 import ContentEditable from 'react-contenteditable';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 
-import { api } from '../services/api';
+import { api } from '@services/api';
 
 interface ParamsData {
   id: string;

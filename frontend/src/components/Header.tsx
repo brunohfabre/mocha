@@ -1,8 +1,9 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
+
 import { Menu, MenuButton, MenuList, MenuItem } from './Menu';
 
 export function Header(): JSX.Element {

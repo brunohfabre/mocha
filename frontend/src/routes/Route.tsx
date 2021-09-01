@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 import {
   Redirect,
@@ -6,10 +6,12 @@ import {
   RouteProps as RRDRouteProps,
 } from 'react-router-dom';
 
-import LogoBlackImage from '../assets/images/logo_black.svg';
-import { AuthContext } from '../contexts/AuthContext';
-import { AuthLayout } from '../pages/layouts/AuthLayout';
-import { DefaultLayout } from '../pages/layouts/DefaultLayout';
+import LogoBlackImage from '@assets/images/logo_black.svg';
+
+import { AuthContext } from '@contexts/AuthContext';
+
+import { AuthLayout } from '@pages/layouts/AuthLayout';
+import { DefaultLayout } from '@pages/layouts/DefaultLayout';
 
 interface RouteProps extends RRDRouteProps {
   component: any;

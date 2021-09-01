@@ -1,12 +1,13 @@
-import { useEffect, useRef, useContext } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 
 import { FormHandles } from '@unform/core';
 import { useHistory } from 'react-router-dom';
 
-import { Button } from '../components/Button';
-import { IconButton } from '../components/IconButton';
-import { Menu, MenuButton, MenuItem, MenuList } from '../components/Menu';
-import { NotesContext } from '../contexts/NotesContext';
+import { NotesContext } from '@contexts/NotesContext';
+
+import { Button } from '@components/Button';
+import { IconButton } from '@components/IconButton';
+import { Menu, MenuButton, MenuItem, MenuList } from '@components/Menu';
 
 export function Notes(): JSX.Element {
   const {

@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface SpinProps {
   fill?: 'white' | 'black';
 }
